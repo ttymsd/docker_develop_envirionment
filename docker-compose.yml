@@ -1,0 +1,48 @@
+httpd_volume:
+  image: busybox
+  volumes:
+    - /documents/html_mock
+    - /documents/api_mock
+    - /documents/app_download
+
+jenkins_volume:
+  image: busybox
+  volumes:
+    - /jenkins_volume
+
+android_sdk:
+  build: ./android
+  volumes:
+    - /usr/local/android-sdk-linux
+
+stub:
+  build: ./stub
+  volumes_from:
+    - httpd_volume
+  tty: true
+
+jenkins:
+  build: ./jenkins
+  volumes_from:
+    - jenkins_volume
+    - httpd_volume
+    - android_sdk
+  links:
+    - httpd
+  tty: true
+
+httpd:
+  build: ./httpd
+  volumes_from:
+    - httpd_volume
+  tty: true
+
+proxy:
+  build: ./proxy
+  #net: mybridge
+  ports:
+    - "8100:8100"
+  links:
+    - jenkins
+    - stub
+    - httpd
