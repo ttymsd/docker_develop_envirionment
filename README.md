@@ -41,6 +41,10 @@ Jenkins2.xです.
 + httpd/Dockerfileを編集して公開用ディレクトリにVolumeContainerを参照するシンボリックリンクを作成するようにする
 
 ## Swagger Stub Server
+デフォルトでSwaggerの公式サンプルを動かす様にしようとしていたが、VolumeContainer経由でJenkinsから更新できるようにすると
+imageのbuild時に追加したファイルが読み取れないので、swaggerで作るserverスクリプトは手作業で追加・実行するようにする.
+
+Jenkinsで更新したときに再起動が不要になるように`node-dev index.js`で実行する.
 
 **FIXME**
 
